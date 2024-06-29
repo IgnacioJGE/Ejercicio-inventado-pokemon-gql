@@ -24,5 +24,40 @@ try {
     }
     return new Error(error.message)
 }
+    },
+    getPokemon: async (_:unknown,
+        args:{id:string}
+    )=>{
+try {
+    const Pokemon = await Modelopokemon.findById(args.id)
+    return({
+        nombre:Pokemon?.nombre,
+        id:Pokemon?.id,
+        URL:Pokemon?.URL,
+        tipos:Pokemon?.tipos
+    })
+} catch (error) {
+    return new Error("Pokemon no existe en la base de datos")
+}
+    },
+    getPokemons: async ()=>{
+        try {
+            const pokemons= await Modelopokemon.find();
+            if(pokemons.length==0){
+                throw new Error("No hay pokemons en la base de datos")
+            }
+            const mostrarpokeoms:Pokemon[]=[]
+            pokemons.map((Pokemon)=>(
+                mostrarpokeoms.push({
+                    nombre:Pokemon?.nombre,
+                    id:Pokemon?.id,
+                    URL:Pokemon?.URL,
+                    tipos:Pokemon?.tipos 
+                })
+            ))
+            return mostrarpokeoms
+        } catch (error) {
+            return new Error (error.message)
+        }
     }
 }
