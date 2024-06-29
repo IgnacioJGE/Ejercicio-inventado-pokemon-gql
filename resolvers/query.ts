@@ -11,7 +11,7 @@ try {
     const pokimon= await getdatosapi(args.nombre)
     const nuevopokemon= new Modelopokemon(pokimon)
     await nuevopokemon.save()
-    return pokimon
+    return nuevopokemon
 } catch (error) {
     if(error.message.startsWith("Pokemon")){
         const Pokemon= await Modelopokemon.findOne({nombre:args.nombre})
@@ -30,12 +30,7 @@ try {
     )=>{
 try {
     const Pokemon = await Modelopokemon.findById(args.id)
-    return({
-        nombre:Pokemon?.nombre,
-        id:Pokemon?.id,
-        URL:Pokemon?.URL,
-        tipos:Pokemon?.tipos
-    })
+    return(Pokemon)
 } catch (error) {
     return new Error("Pokemon no existe en la base de datos")
 }
@@ -46,16 +41,7 @@ try {
             if(pokemons.length==0){
                 throw new Error("No hay pokemons en la base de datos")
             }
-            const mostrarpokeoms:Pokemon[]=[]
-            pokemons.map((Pokemon)=>(
-                mostrarpokeoms.push({
-                    nombre:Pokemon?.nombre,
-                    id:Pokemon?.id,
-                    URL:Pokemon?.URL,
-                    tipos:Pokemon?.tipos 
-                })
-            ))
-            return mostrarpokeoms
+            return pokemons
         } catch (error) {
             return new Error (error.message)
         }
